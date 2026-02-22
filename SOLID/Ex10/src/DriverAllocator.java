@@ -1,6 +1,4 @@
-public class DriverAllocator {
-    public String allocate(String studentId) {
-        // fake deterministic driver
-        return "DRV-17";
-    }
+/** Abstraction for allocating a driver. */
+public interface DriverAllocator {
+    String allocate(String studentId);
 }

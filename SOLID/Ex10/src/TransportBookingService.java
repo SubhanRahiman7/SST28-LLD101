@@ -1,20 +1,30 @@
+/**
+ * Depends only on abstractions (injected). No "new" for distance/allocator/gateway.
+ */
 public class TransportBookingService {
-    // DIP violation: direct concretes
-    public void book(TripRequest req) {
-        DistanceCalculator dist = new DistanceCalculator();
-        DriverAllocator alloc = new DriverAllocator();
-        PaymentGateway pay = new PaymentGateway();
+    private final DistanceCalculator distanceCalculator;
+    private final DriverAllocator driverAllocator;
+    private final PaymentGateway paymentGateway;
 
-        double km = dist.km(req.from, req.to);
+    public TransportBookingService(DistanceCalculator distanceCalculator,
+                                   DriverAllocator driverAllocator,
+                                   PaymentGateway paymentGateway) {
+        this.distanceCalculator = distanceCalculator;
+        this.driverAllocator = driverAllocator;
+        this.paymentGateway = paymentGateway;
+    }
+
+    public void book(TripRequest req) {
+        double km = distanceCalculator.km(req.from, req.to);
         System.out.println("DistanceKm=" + km);
 
-        String driver = alloc.allocate(req.studentId);
+        String driver = driverAllocator.allocate(req.studentId);
         System.out.println("Driver=" + driver);
 
-        double fare = 50.0 + km * 6.6666666667; // messy pricing
+        double fare = 50.0 + km * 6.6666666667;
         fare = Math.round(fare * 100.0) / 100.0;
 
-        String txn = pay.charge(req.studentId, fare);
+        String txn = paymentGateway.charge(req.studentId, fare);
         System.out.println("Payment=PAID txn=" + txn);
 
         BookingReceipt r = new BookingReceipt("R-501", fare);
