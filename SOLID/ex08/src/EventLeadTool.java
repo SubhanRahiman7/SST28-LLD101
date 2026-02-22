@@ -1,0 +1,18 @@
+/** Event lead: only event operations. No dummy methods. */
+public class EventLeadTool implements EventOperations {
+    private final EventPlanner planner;
+
+    public EventLeadTool(EventPlanner planner) {
+        this.planner = planner;
+    }
+
+    @Override
+    public void createEvent(String name, double budget) {
+        planner.create(name, budget);
+    }
+
+    @Override
+    public int getEventsCount() {
+        return planner.count();
+    }
+}
