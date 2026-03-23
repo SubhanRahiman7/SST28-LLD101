@@ -71,20 +71,20 @@ classDiagram
 ## Mermaid Flow Chart (Game Flow)
 ```mermaid
 flowchart TD
-  A([User Input]) --> B[BoardGenerator.generate(n, difficulty)]
-  B --> C[Board(size, jumpMap)]
-  C --> D[Game(players, dice, board)]
-  D --> E{Active players >= 2?}
-  E -- No --> Z([Print winners & game over])
+  A([User Input]) --> B[Generate board]
+  B --> C[Create board object]
+  C --> D[Create game object]
+  D --> E{Active players at least 2?}
+  E -- No --> Z([Print winners and game over])
   E -- Yes --> F[For each player's turn]
-  F --> G[Roll dice 1..6]
-  G --> H{pos + roll > lastCell?}
+  F --> G[Roll dice 1 to 6]
+  G --> H{pos plus roll exceeds last cell?}
   H -- Yes --> I[No movement]
-  H -- No --> J[Move to proposedPos]
-  J --> K[Resolve jumps (follow start->end links)]
-  K --> L{Reached lastCell?}
+  H -- No --> J[Move forward]
+  J --> K[Resolve snake and ladder jumps]
+  K --> L{Reached last cell?}
   L -- No --> F
-  L -- Yes --> M[Mark player won]
+  L -- Yes --> M[Mark player as winner]
   M --> E
 ```
 
